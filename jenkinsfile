@@ -1,4 +1,38 @@
-post {
+pipeline {
+    agent any
+
+    stages {
+        stage('Run Tests') {
+            steps {
+                script {
+                    // GitHubから最新コードを取得（必要な場合）
+                    sh 'git pull origin master'
+
+                    // index.htmlが変更されたか確認
+                    def htmlFileUpdated = sh(script: "git diff --name-only HEAD^ HEAD | grep -E 'index.html'", returnStatus: true)
+                    if (htmlFileUpdated == 0) {
+                        echo "index.htmlが更新されました"
+
+                        // HTML構文チェック
+                        def htmlLintResult = sh(script: 'html5-lint index.html', returnStatus: true, returnStdout: true)
+                        
+                        // 結果を確認し、通知用メッセージを準備
+                        if (htmlLintResult != 0) {
+                            echo "HTML構文にエラーがあります"
+                            currentBuild.result = 'FAILURE'
+                        } else {
+                            echo "HTML構文に問題はありません"
+                            currentBuild.result = 'SUCCESS'
+                        }
+                    } else {
+                        echo "index.htmlは変更されていません"
+                    }
+                }
+            }
+        }
+    }
+
+    post {
         always {
             script {
                 // ビルド結果を確認

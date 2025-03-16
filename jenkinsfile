@@ -39,7 +39,7 @@ pipeline {
                 def status = currentBuild.result ?: 'SUCCESS'
                 def message = (status != 'SUCCESS') ? "✘ ビルドに失敗したよ。。。" : "✅ ビルド成功したよ！"
                 def discordWebhookURL = "https://discord.com/api/webhooks/1350734408331558954/TC5h3H8Ke4jaZbmWOnzdyJ2R5nU0dPJ500m1vGhVlvBVDh84tZRq0029DAM0XGP-LK5d"
-                def slackWebhookURL = "https://hooks.slack.com/services/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"
+                def slackWebhookURL = "https://hooks.slack.com/services/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"
 
                 // Discord通知
                 def discordPayload = """{

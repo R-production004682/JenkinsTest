@@ -67,7 +67,7 @@ pipeline {
                 }"""
                 
                 sh """
-                    curl -X POST -H "Content-Type: application/json" -d '${slackPayload.replace("'", "\\'")}' ${slackWebhookURL}
+                    curl -X POST -H "Content-Type: application/json" -d '${slackPayload.replace("'", "\\'")}' ${slackWebhookURL} || echo "Slack notification failed"
                 """
             }
         }
